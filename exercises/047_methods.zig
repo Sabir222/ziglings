@@ -78,6 +78,8 @@ pub fn main() void {
     };
 
     var aliens_alive = aliens.len;
+
+    //const heat_ray:HeatRay = .{ .damage = 7 };
     const heat_ray = HeatRay{ .damage = 7 }; // We've been given a heat ray weapon.
 
     // We'll keep checking to see if we've killed all the aliens yet.
@@ -88,7 +90,7 @@ pub fn main() void {
         for (&aliens) |*alien| {
 
             // *** Zap the alien with the heat ray here! ***
-            ???.zap(???);
+            HeatRay.zap(heat_ray, alien);
 
             // If the alien's health is still above 0, it's still alive.
             if (alien.health > 0) aliens_alive += 1;
