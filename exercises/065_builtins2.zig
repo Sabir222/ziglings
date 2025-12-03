@@ -58,7 +58,7 @@ pub fn main() void {
     // Oops! We cannot leave the 'me' and 'myself' fields
     // undefined. Please set them here:
     narcissus.me = &narcissus;
-    narcissus.??? = ???;
+    narcissus.myself = &narcissus;
 
     // This determines a "peer type" from three separate
     // references (they just happen to all be the same object).
@@ -70,7 +70,7 @@ pub fn main() void {
     //
     // The fix for this is very subtle, but it makes a big
     // difference!
-    const Type2 = narcissus.fetchTheMostBeautifulType();
+    const Type2 = Narcissus.fetchTheMostBeautifulType();
 
     // Now we print a pithy statement about Narcissus.
     print("A {s} loves all {s}es. ", .{
@@ -78,74 +78,29 @@ pub fn main() void {
         maximumNarcissism(Type2),
     });
 
-    //   His final words as he was looking in
-    //   those waters he habitually watched
-    //   were these:
-    //       "Alas, my beloved boy, in vain!"
-    //   The place gave every word back in reply.
-    //   He cried:
-    //            "Farewell."
-    //   And Echo called:
-    //                   "Farewell!"
-    //
-    //     --Ovid, The Metamorphoses
-    //       translated by Ian Johnston
-
     print("He has room in his heart for:", .{});
 
     // A StructFields array
     const fields = @typeInfo(Narcissus).@"struct".fields;
 
-    // 'fields' is a slice of StructFields. Here's the declaration:
-    //
-    //     pub const StructField = struct {
-    //         name: [:0]const u8,
-    //         type: type,
-    //         default_value_ptr: ?*const anyopaque,
-    //         is_comptime: bool,
-    //         alignment: comptime_int,
-    //
-    //         defaultValue() ?sf.type  // Function that loads the
-    //                                  // field's default value from
-    //                                  // `default_value_ptr`
-    //     };
-    //
     // Please complete these 'if' statements so that the field
     // name will not be printed if the field is of type 'void'
     // (which is a zero-bit type that takes up no space at all!):
-    if (fields[0].??? != void) {
+    if (fields[0].type != void) {
         print(" {s}", .{fields[0].name});
     }
 
-    if (fields[1].??? != void) {
+    if (fields[1].type != void) {
         print(" {s}", .{fields[1].name});
     }
 
-    if (fields[2].??? != void) {
+    if (fields[2].type != void) {
         print(" {s}", .{fields[2].name});
     }
-
-    // Yuck, look at all that repeated code above! I don't know
-    // about you, but it makes me itchy.
-    //
-    // Alas, we can't use a regular 'for' loop here because
-    // 'fields' can only be evaluated at compile time.  It seems
-    // like we're overdue to learn about this "comptime" stuff,
-    // doesn't it? Don't worry, we'll get there.
 
     print(".\n", .{});
 }
 
-// NOTE: This exercise did not originally include the function below.
-// But a change after Zig 0.10.0 added the source file name to the
-// type. "Narcissus" became "065_builtins2.Narcissus".
-//
-// To fix this, we've added this function to strip the filename from
-// the front of the type name. (It returns a slice of the type name
-// starting at the index + 1 of character ".")
-//
-// We'll be seeing @typeName again in Exercise 070. For now, you can
-// see that it takes a Type and returns a u8 "string".
 fn maximumNarcissism(myType: anytype) []const u8 {
     const indexOf = @import("std").mem.indexOf;
 
